@@ -1,268 +1,43 @@
-[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md)
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [圖文網站](https://masterai-top.github.io/texas-holdem-poker-club-server/zh-tw/)
 
-# Unity 與 C++ 德州撲克俱樂部|德州扑克源码
+# C++ 德州撲克俱樂部推送伺服器原始碼
 
-## Multiplayer Poker Club System | Tournament Platform | Unity + C++
+面向德州撲克俱樂部和多人房間的 C++/Tars 後端服務，重點處理訊息推送、玩家線上狀態、遊戲狀態、房間玩家上報、廣播與維護通知。倉庫的真實產品截圖則說明此服務在俱樂部、私人牌局及多玩法客戶端中的整合場景。
 
-## Hệ Thống Club Poker Trực Tuyến | Alliance | MTT/SNG | Đa Nền Tảng
+> 公開內容主要是 `PushServer` 與相關協議，不代表完整 Unity 客戶端或全部牌桌服務。畫面功能和可交付模組需另行核驗。
 
-## 🃏 Texas Hold'em Poker Club Server – Unity + C++
+## 核心流程
 
+網關上報線上玩家 → PushServer 維護線上/遊戲狀態 → 房間上報玩家與桌子資訊 → 服務按使用者路由推送訊息 → 廣播維護、紅點或狀態變更通知。
 
-**Complete, high-performance Texas Hold'em poker server with Unity client. Production deployment requires independent validation for online poker clubs, private tables, and tournaments (MTT/SNG). Supports 6+ poker variants.**
+## 可核驗功能
 
+- 單人、多人訊息與全服廣播。
+- 玩家線上狀態上報、單筆/批次查詢及線上清單。
+- 遊戲狀態上報和查詢。
+- 房間玩家集合、桌子資訊與線上統計上報。
+- 服務維護、紅點、玩家凍結和狀態通知。
+- MySQL 客戶端、DBAgent 代理及服務路由。
 
-[![Stars](https://img.shields.io/github/stars/masterai-top/texas-holdem-poker-club-server?style=social)](https://github.com/masterai-top/texas-holdem-poker-club-server)
+## 產品玩法與畫面
 
-[![Forks](https://img.shields.io/github/forks/masterai-top/texas-holdem-poker-club-server?style=social)](https://github.com/masterai-top/texas-holdem-poker-club-server)
+截圖展示快速加入/建立房間、俱樂部、現金桌、AOF、短牌、奧馬哈、SNG、MTT、戰績及多語言入口。這些是整合產品畫面，不代表所有玩法程式碼均包含在此公開倉庫。
 
-[![License](https://img.shields.io/badge/license-Custom-blue)](LICENSE)
+| 私人局設定 | 玩法設定 | 建立俱樂部 |
+| --- | --- | --- |
+| <img src="docs/assets/images/screen-01.jpg" width="260" alt="德州撲克私人局設定"> | <img src="docs/assets/images/screen-03.jpg" width="260" alt="現金桌 AOF 短牌奧馬哈"> | <img src="docs/assets/images/screen-04.jpg" width="260" alt="建立德州撲克俱樂部"> |
 
-[![C++](https://img.shields.io/badge/C++-98.1%25-blue)](https://isocpp.org/)
+| 快速加入 | 俱樂部大廳 | 戰績統計 |
+| --- | --- | --- |
+| <img src="docs/assets/images/screen-08.jpg" width="260" alt="輸入房間號加入朋友局"> | <img src="docs/assets/images/screen-11.jpg" width="260" alt="德州撲克俱樂部大廳"> | <img src="docs/assets/images/screen-06.jpg" width="260" alt="德州撲克戰績"> |
 
-[![Unity](https://img.shields.io/badge/Unity-Client-black)](https://unity.com/)
+## 技術架構
 
+服務使用 C++、Tars Application/Servant、`.tars` 介面、Tars MySQL 和 DBAgent 代理。管理命令包含設定重載、清理線上狀態、每日重置與維護通知。Makefile 依賴倉庫外的 Tars 公共協議與內部模組，建置前須補齊依賴並移除硬編碼部署資訊。
 
----
+## 聯絡與核驗
 
+Telegram：[@xuzongbin001](https://t.me/xuzongbin001) · Email：masterai918@gmail.com
 
-## ✨ Key Features
+請依實際交付清單核對功能、相依、授權和法規。本倉庫不保證並發量、完整部署、收益或搜尋排名。
 
-
-- 🎮 **Full poker club system** – Club management, alliance system, private tables
-
-- 🏆 **Tournament engine** – MTT (Multi-Table Tournaments) & SNG (Sit & Go)
-
-- 🃏 **6+ poker variants** – Texas Hold'em, Short Deck (6+), Omaha, Pineapple, Crazy Pineapple, All-In or Fold (AOF)
-
-- 🌍 **Cross-platform** – iOS, Android, Web, H5 via Unity
-
-- ⚡ **High-performance C++ server** – Supports large concurrency, real-time multiplayer
-
-- 📊 **Ranking & shop** – Leaderboards, item store, multi-language support
-<img width="1280" height="2769" alt="微信图片_20260325214400" src="https://github.com/user-attachments/assets/b61a3139-d9a5-4366-b22d-ef0e996419bc" />
-<img width="1280" height="2769" alt="微信图片_20260325214354" src="https://github.com/user-attachments/assets/7327895f-c8bd-4f5b-93d4-721e9f948136" />
-<img width="1280" height="2769" alt="微信图片_20260325214349" src="https://github.com/user-attachments/assets/4cb4ebbf-c560-44de-b03a-6acc4b04c238" />
-<img width="1280" height="2769" alt="微信图片_20260325214344" src="https://github.com/user-attachments/assets/9861fcfe-b0e8-42f2-886c-aa804f448dc9" />
-<img width="1280" height="2769" alt="微信图片_20260325214338" src="https://github.com/user-attachments/assets/be52185d-79fd-4933-be31-1da4041dd467" />
-<img width="1280" height="2769" alt="微信图片_20260325214332" src="https://github.com/user-attachments/assets/d363f719-9ff8-4e76-b813-e4e570fd7310" />
-<img width="1280" height="2769" alt="微信图片_20260325214326" src="https://github.com/user-attachments/assets/96de51d0-a9b8-469d-ab36-cae0d8fa9378" />
-<img width="1280" height="2769" alt="微信图片_20260325214303" src="https://github.com/user-attachments/assets/306dad30-98c9-46b8-beaa-b9f520056432" />
-<img width="941" height="1920" alt="E64F04E41E05A6173D7344F654CBCF03" src="https://github.com/user-attachments/assets/bafaf81d-8732-41ca-8283-deecdbeea605" />
-<img width="941" height="1920" alt="AB7AF159B3F73F5AEB2C720E957074F4" src="https://github.com/user-attachments/assets/1d4dc0f1-a37b-4547-8faa-20f2e736c480" />
-<img width="941" height="1920" alt="6EF906300DBB3B2C29583B8027D40F5C" src="https://github.com/user-attachments/assets/3d6b3374-4ce3-4a93-ba2f-ed6af1d2810d" />
-<img width="941" height="1920" alt="4C5F4C4216871C7086763E3DC20C5A76" src="https://github.com/user-attachments/assets/b63c2033-fbfc-49f3-9cf0-88c70ec00c9e" />
-## Clone repository
-
-git clone https://github.com/masterai-top/texas-holdem-poker-club-server.git
-
-cd texas-holdem-poker-club-server
-
-
-## Compile (example for Linux)
-
-make
-
-
-## Run server
-
-./PushServer
-
-Một giải pháp Poker Texas Hold'em hoàn chỉnh đã được kiểm chứng qua vận hành thực tếm chứng qua vận hành thực tế trong nhiều trong nhiềum.
-
-
-Hỗ trợ đầy đủ các chức năng dành cho nền tảng Poker hiện đại:
-
-
-* 🏆 Hệ thống Club
-
-* 🤝 Hệ thống Alliance
-
-* 👥 Bàn chơi riêng (Private Table)
-
-* 🎯 Giải đấu MTT
-
-* 🎯 Giải đấu SNG
-
-* 🏅 Bảng xếp hạng
-
-* 🛒 Cửa hàng vật phẩm
-
-* 🌍 Đa ngôn ngữ
-
-* 📱 iOS / Android / Web / H5
-
-
----
-
-
-## ♠ Các Chế Độ Chơi
-
-
-* Texas Hold'em
-
-* Short Deck (6+ Hold'em)
-
-* Omaha
-
-* All-In Or Fold (AOF)
-
-* Pineapple
-
-* Crazy Pineapple
-
-* MTT Tournament
-
-* SNG Tournament
-
-
----
-
-
-## ⚙️ Công Nghệ
-
-
-### Client
-
-
-* Unity
-
-
-### Server
-
-
-* C++
-
-
-### Đặc Điểm
-
-
-* Hiệu năng cao
-
-* Hỗ trợ số lượng lớn người chơi trực tuyến
-
-* Kiến trúc mở rộng linh hoạt
-
-* Dễ dàng tùy biến theo nhu cầu dự án
-
-* Hỗ trợ triển khai đa nền tảng
-
-
----
-
-
-## 🚀 Phù Hợp Cho
-
-
-* Poker Club Platform
-
-* Multiplayer Card Game
-
-* Online Tournament System
-
-* Mobile Poker Project
-
-* International Poker Community
-
-* Custom Poker Development
-
-
----
-
-
-## 🌟 Tính Năng Nổi Bật
-
-
-✅ Club Management
-
-
-✅ Alliance System
-
-
-✅ Tournament Management
-
-
-✅ Real-Time Multiplayer
-
-
-✅ Ranking System
-
-
-✅ Shop System
-
-
-✅ Multi-Language Support
-
-
-✅ Cross-Platform Deployment
-
-
----
-
-
-## 📸 Demo Available
-
-
-Liên hệ để nhận:
-
-
-* Demo trực tuyến
-
-* Video giới thiệu
-
-* Tài liệu chức năng
-
-* Giải pháp triển khai
-
-
----
-
-
-## 📞 Contact
-
-
-Telegram: @xuzongbin001
-
-
-GitHub:
-
-https://github.com/masterai-top/Online-Poker-Club-Game-System
-
-
-## Keywords
-
-
-Texas Holdem Poker Source Code
-
-
-Poker Club System
-
-
-Online Poker Platform
-
-
-Multiplayer Poker Game
-
-
-Unity Poker Source Code
-
-
-Poker Tournament Software
-
-
-Poker Club Management
-
-
-MTT Tournament System
-
-
-Card Game Source Code
-
-
-Online Poker Development
-
-
-Mobile Poker Platform
-
-
-Texas Holdem Multiplayer
